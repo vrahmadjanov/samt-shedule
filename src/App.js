@@ -38,87 +38,58 @@ const IndicatorDot = styled.div`
 
 const QueueContainer = styled.div`
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  position: relative;
-`;
-
-const PageContainer = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
+  display: grid;
+  grid-template-rows: none;
+  grid-auto-rows: clamp(6vh, 10vw, 12vh);
+  grid-auto-flow: row;
   width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  opacity: ${props => props.$active ? 1 : 0};
-  transition: opacity 0.5s ease;
+  background: #f5f7fa;
 `;
 
-const OfficeRow = styled.div`
-  display: flex;
-  height: 10%;
-  min-height: 120px;
-  margin-bottom: 2px;
-  background: white;
-  overflow: hidden;
+const GridRow = styled.div`
+  display: contents;
 `;
 
-const OfficeCard = styled.div`
-  min-width: 300px;
+const GridCell = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 3rem;
+  font-size: clamp(1.5rem, 3vw, 3rem);
   font-weight: bold;
   color: #2c3e50;
   background: white;
-  border-right: 1px solid #e9ecef;
-  padding: 0 30px;
-`;
-
-const TicketsWrapper = styled.div`
-  position: relative;
-  flex: 1;
-  overflow: hidden;
-`;
-
-const TicketsContainer = styled.div`
-  display: flex;
+  box-sizing: border-box;
+  padding: 0 clamp(1vw, 2vw, 2vw);
+  border-bottom: 0.3vh solid #e9ecef;
+  border-right: 0.15vw solid #e9ecef;
+  min-width: 0;
+  width: 100%;
   height: 100%;
-  align-items: center;
-  padding: 0 20px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
+  overflow: hidden;
+  text-align: left;
+
+  &:last-child {
+    border-right: none;
   }
 `;
 
-const FadeEffect = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 100px;
-  height: 100%;
-  background: linear-gradient(90deg, rgba(245,247,250,0) 0%, rgba(245,247,250,1) 100%);
-  pointer-events: none;
+const HeaderCell = styled(GridCell)`
+  background: #e9ecef;
+  border-bottom: 0.3vh solid #d1d5db;
 `;
 
 const TicketCard = styled.div`
-  min-width: 250px;
+  min-width: clamp(120px, 18vw, 250px);
   height: 80%;
-  margin-right: 20px;
-  border-radius: 8px;
+  margin-right: clamp(0.5vw, 1vw, 1vw);
+  border-radius: 0.7vw;
   display: flex;
   align-items: center;
   justify-content: center;
   animation: ${fadeIn} 0.3s ease-out;
   background-color: ${props => props.$isCurrent ? '#4285f4' : '#f8f9fa'};
   color: ${props => props.$isCurrent ? 'white' : '#2c3e50'};
-  border: 2px solid ${props => props.$isCurrent ? '#4285f4' : '#e9ecef'};
-  box-shadow: ${props => props.$isCurrent ? '0 4px 12px rgba(66, 133, 244, 0.3)' : '0 2px 6px rgba(0, 0, 0, 0.05)'};
+  border: 0.15vw solid ${props => props.$isCurrent ? '#4285f4' : '#e9ecef'};
+  box-shadow: ${props => props.$isCurrent ? '0 0.4vw 1.2vw rgba(66, 133, 244, 0.3)' : '0 0.2vw 0.6vw rgba(0, 0, 0, 0.05)'};
   transition: all 0.2s ease;
   flex-shrink: 0;
 
@@ -130,34 +101,57 @@ const TicketCard = styled.div`
 const TicketContent = styled.div`
   display: flex;
   align-items: center;
-  padding: 0 20px;
+  padding: 0 clamp(0.5vw, 1vw, 1vw);
 `;
 
 const TicketNumber = styled.div`
-  font-size: 3rem;
+  font-size: clamp(1.2rem, 2.5vw, 2.5rem);
   font-weight: bold;
-  margin-right: 20px;
+  margin-right: clamp(0.5vw, 1vw, 1vw);
 `;
 
 const TicketTime = styled.div`
-  font-size: 2.5rem;
+  font-size: clamp(1.1rem, 2vw, 2.2rem);
   opacity: ${props => props.$isCurrent ? 0.9 : 0.7};
+`;
+
+const TicketsContainer = styled.div`
+  display: flex;
+  height: 100%;
+  align-items: center;
+  padding: 0 clamp(0.5vw, 1vw, 1vw);
+  overflow-x: auto;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 // Моковые данные (увеличим количество кабинетов для демонстрации пагинации)
 const mockData = [
   {
     id: 1,
-    name: 'Кабинет 101',
+    name: '101',
+    doctor: 'Иванов И.И.',
     tickets: [
       { number: 'A101', time: '10:00', isCurrent: true },
       { number: 'A102', time: '10:15', isCurrent: false },
-      { number: 'A103', time: '10:30', isCurrent: false }
+      { number: 'A103', time: '10:30', isCurrent: false },
+      { number: 'A102', time: '10:15', isCurrent: false },
+      { number: 'A102', time: '10:15', isCurrent: false },
+      { number: 'A103', time: '10:30', isCurrent: false },
+      { number: 'A102', time: '10:15', isCurrent: false },
+      { number: 'A102', time: '10:15', isCurrent: false },
+      { number: 'A103', time: '10:30', isCurrent: false },
+      { number: 'A102', time: '10:15', isCurrent: false },
+      { number: 'A102', time: '10:15', isCurrent: false },
+      { number: 'A103', time: '10:30', isCurrent: false },
     ]
   },
   {
     id: 2,
-    name: 'Кабинет 202',
+    name: '202',
+    doctor: 'Петрова А.В.',
     tickets: [
       { number: 'B201', time: '10:05', isCurrent: true },
       { number: 'B202', time: '10:20', isCurrent: false }
@@ -165,7 +159,8 @@ const mockData = [
   },
   {
     id: 3,
-    name: 'Кабинет 305',
+    name: '305',
+    doctor: 'Сидоров К.Л.',
     tickets: [
       { number: 'C301', time: '10:10', isCurrent: true },
       { number: 'C302', time: '10:25', isCurrent: false }
@@ -173,7 +168,8 @@ const mockData = [
   },
   {
     id: 4,
-    name: 'Кабинет 108',
+    name: '108',
+    doctor: 'Васильева М.Г.',
     tickets: [
       { number: 'D101', time: '10:15', isCurrent: true },
       { number: 'D102', time: '10:30', isCurrent: false }
@@ -181,7 +177,8 @@ const mockData = [
   },
   {
     id: 5,
-    name: 'Кабинет 207',
+    name: '207',
+    doctor: 'Кузнецов Д.С.',
     tickets: [
       { number: 'E201', time: '10:20', isCurrent: true },
       { number: 'E202', time: '10:35', isCurrent: false }
@@ -189,7 +186,8 @@ const mockData = [
   },
   {
     id: 6,
-    name: 'Кабинет 310',
+    name: '310',
+    doctor: 'Морозова Е.П.',
     tickets: [
       { number: 'F301', time: '10:25', isCurrent: true },
       { number: 'F302', time: '10:40', isCurrent: false }
@@ -197,7 +195,8 @@ const mockData = [
   },
   {
     id: 7,
-    name: 'Кабинет 115',
+    name: '115',
+    doctor: 'Григорьев В.А.',
     tickets: [
       { number: 'G101', time: '10:30', isCurrent: true },
       { number: 'G102', time: '10:45', isCurrent: false }
@@ -205,7 +204,8 @@ const mockData = [
   },
   {
     id: 1,
-    name: 'Кабинет 101',
+    name: '101',
+    doctor: 'Иванов И.И.',
     tickets: [
       { number: 'A101', time: '10:00', isCurrent: true },
       { number: 'A102', time: '10:15', isCurrent: false },
@@ -214,15 +214,27 @@ const mockData = [
   },
   {
     id: 2,
-    name: 'Кабинет 202',
+    name: '202',
+    doctor: 'Петрова А.В.',
     tickets: [
       { number: 'B201', time: '10:05', isCurrent: true },
-      { number: 'B202', time: '10:20', isCurrent: false }
+      { number: 'B202', time: '10:20', isCurrent: false },
+      { number: 'C302', time: '10:25', isCurrent: false },
+      { number: 'C302', time: '10:25', isCurrent: false },
+      { number: 'C302', time: '10:25', isCurrent: false },
+      { number: 'C302', time: '10:25', isCurrent: false },
+      { number: 'C302', time: '10:25', isCurrent: false },
+      { number: 'C302', time: '10:25', isCurrent: false },
+      { number: 'C302', time: '10:25', isCurrent: false },
+      { number: 'C302', time: '10:25', isCurrent: false },
+      { number: 'C302', time: '10:25', isCurrent: false },
+      { number: 'C302', time: '10:25', isCurrent: false },
     ]
   },
   {
     id: 3,
-    name: 'Кабинет 305',
+    name: '305',
+    doctor: 'Сидоров К.Л.',
     tickets: [
       { number: 'C301', time: '10:10', isCurrent: true },
       { number: 'C302', time: '10:25', isCurrent: false },
@@ -239,7 +251,8 @@ const mockData = [
   },
   {
     id: 4,
-    name: 'Кабинет 108',
+    name: '108',
+    doctor: 'Васильева М.Г.',
     tickets: [
       { number: 'D101', time: '10:15', isCurrent: true },
       { number: 'D102', time: '10:30', isCurrent: false }
@@ -247,7 +260,8 @@ const mockData = [
   },
   {
     id: 5,
-    name: 'Кабинет 207',
+    name: '207',
+    doctor: 'Кузнецов Д.С.',
     tickets: [
       { number: 'E201', time: '10:20', isCurrent: true },
       { number: 'E202', time: '10:35', isCurrent: false }
@@ -255,7 +269,8 @@ const mockData = [
   },
   {
     id: 6,
-    name: 'Кабинет 310',
+    name: '310',
+    doctor: 'Морозова Е.П.',
     tickets: [
       { number: 'F301', time: '10:25', isCurrent: true },
       { number: 'F302', time: '10:40', isCurrent: false }
@@ -263,7 +278,35 @@ const mockData = [
   },
   {
     id: 7,
-    name: 'Кабинет 115',
+    name: '115',
+    doctor: 'Григорьев В.А.',
+    tickets: [
+      { number: 'G101', time: '10:30', isCurrent: true },
+      { number: 'G102', time: '10:45', isCurrent: false }
+    ]
+  },
+  {
+    id: 5,
+    name: '207',
+    doctor: 'Кузнецов Д.С.',
+    tickets: [
+      { number: 'E201', time: '10:20', isCurrent: true },
+      { number: 'E202', time: '10:35', isCurrent: false }
+    ]
+  },
+  {
+    id: 6,
+    name: '310',
+    doctor: 'Морозова Е.П.',
+    tickets: [
+      { number: 'F301', time: '10:25', isCurrent: true },
+      { number: 'F302', time: '10:40', isCurrent: false }
+    ]
+  },
+  {
+    id: 7,
+    name: '115',
+    doctor: 'Григорьев В.А.',
     tickets: [
       { number: 'G101', time: '10:30', isCurrent: true },
       { number: 'G102', time: '10:45', isCurrent: false }
@@ -272,7 +315,7 @@ const mockData = [
 ];
 
 // Рассчитываем сколько кабинетов помещается на одной странице
-const OFFICES_PER_PAGE = 10;
+const OFFICES_PER_PAGE = 7;
 
 function App() {
   const [currentPage, setCurrentPage] = useState(0);
@@ -296,33 +339,46 @@ function App() {
 
   return (
     <AppContainer>
-      <QueueContainer>
-        {paginatedData.map((pageData, pageIndex) => (
-          <PageContainer 
-            key={pageIndex} 
-            $active={currentPage === pageIndex}
+      {/* Скрытый контейнер для измерения ширины фамилий */}
+      <div style={{ position: 'absolute', visibility: 'hidden', height: 0, overflow: 'hidden' }}>
+        {mockData.map((office, idx) => (
+          <div
+            key={office.id + '-' + idx}
+            style={{ fontSize: '3rem', fontWeight: 'bold', padding: '0 30px', fontFamily: 'Arial, sans-serif', whiteSpace: 'nowrap' }}
           >
-            {pageData.map(office => (
-              <OfficeRow key={office.id}>
-                <OfficeCard>
-                  {office.name}
-                </OfficeCard>
-                <TicketsWrapper>
-                  <TicketsContainer>
-                    {office.tickets.map((ticket, index) => (
-                      <TicketCard key={ticket.number} $isCurrent={ticket.isCurrent}>
-                        <TicketContent>
-                          <TicketNumber>{ticket.number}</TicketNumber>
-                          <TicketTime $isCurrent={ticket.isCurrent}>{ticket.time}</TicketTime>
-                        </TicketContent>
-                      </TicketCard>
-                    ))}
-                  </TicketsContainer>
-                  <FadeEffect />
-                </TicketsWrapper>
-              </OfficeRow>
-            ))}
-          </PageContainer>
+            {office.doctor}
+          </div>
+        ))}
+      </div>
+      {/* Шапка онлайн-табло как карточки */}
+      <QueueContainer
+        style={{
+          gridTemplateColumns: '25% 15% 60%',
+          gridAutoRows: 'clamp(6vh, 10vw, 12vh)',
+        }}
+      >
+        {/* Шапка */}
+        <HeaderCell style={{ gridColumn: 1 }}>Врач</HeaderCell>
+        <HeaderCell style={{ gridColumn: 2 }}>Кабинет</HeaderCell>
+        <HeaderCell style={{ gridColumn: 3 }}>Талон / Время</HeaderCell>
+        {/* Данные */}
+        {paginatedData[currentPage].map((office, idx) => (
+          <GridRow key={office.id + '-' + idx}>
+            <GridCell style={{ gridColumn: 1 }}>{office.doctor}</GridCell>
+            <GridCell style={{ gridColumn: 2 }}>{office.name}</GridCell>
+            <GridCell style={{ gridColumn: 3, padding: 0 }}>
+              <TicketsContainer>
+                {office.tickets.map((ticket, tIdx) => (
+                  <TicketCard key={ticket.number} $isCurrent={ticket.isCurrent}>
+                    <TicketContent>
+                      <TicketNumber>{ticket.number}</TicketNumber>
+                      <TicketTime $isCurrent={ticket.isCurrent}>{ticket.time}</TicketTime>
+                    </TicketContent>
+                  </TicketCard>
+                ))}
+              </TicketsContainer>
+            </GridCell>
+          </GridRow>
         ))}
       </QueueContainer>
 
